@@ -1,0 +1,13 @@
+name: Testing
+main: io.github.rypofalem.updraft.UpdraftPlugin
+version: 1.9.2-1.0
+website: rypofalem.github.io
+author: RypoFalem
+description: Adds updrafts that alter a player's vertical velocity
+permissions:
+  updraft.create:
+    description: create updrafts
+    default: op
+  updraft.use:
+    description: affected by updrafts
+    default: true
