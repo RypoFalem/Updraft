@@ -6,12 +6,12 @@ public class CuboidDraft extends Draft {
 	Location corner1;
 	Location corner2;
 
-	CuboidDraft(double acceleration, double glidingAcceleration, double maxYVelocity){
-		super(acceleration, glidingAcceleration, maxYVelocity);
+	CuboidDraft(double acceleration, double glidingAcceleration){
+		super(acceleration, glidingAcceleration);
 	}
 	
-	public CuboidDraft(double acceleration, double glidingAcceleration, double maxYVelocity, Location corner1, Location corner2){
-		super(acceleration, glidingAcceleration, maxYVelocity);
+	public CuboidDraft(double acceleration, double glidingAcceleration, Location corner1, Location corner2){
+		super(acceleration, glidingAcceleration);
 		setRegion(corner1, corner2);
 	}
 

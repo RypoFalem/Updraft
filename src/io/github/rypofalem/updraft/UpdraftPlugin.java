@@ -25,9 +25,9 @@ public class UpdraftPlugin extends JavaPlugin implements Listener{
 	
 	public void loadConfig(){
 		drafts = new ArrayList<Draft>();
-		CuboidDraft cd = new CuboidDraft(.5*multiplier, 3*multiplier, 3*multiplier, new Location(Bukkit.getWorld("world"), -41, 77, -32), new Location(Bukkit.getWorld("world"), -51, 100, -44));
+		CuboidDraft cd = new CuboidDraft(.3*multiplier, 3*multiplier, new Location(Bukkit.getWorld("world"), -41, 77, -32), new Location(Bukkit.getWorld("world"), -51, 100, -44));
 		drafts.add(cd);
-		CylDraft cyd = new CylDraft(.5*multiplier, 3*multiplier, 3*multiplier, new Location(Bukkit.getWorld("world"),-46, 77, -6), 5d, 30d);
+		CylDraft cyd = new CylDraft(.3*multiplier, 3*multiplier, new Location(Bukkit.getWorld("world"),-46, 77, -6), 5d, 30d);
 		drafts.add(cyd);
 		dp = new DraftPusher(this);
 		Bukkit.getScheduler().runTaskTimer(this, dp, 1, multiplier);

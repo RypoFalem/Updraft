@@ -10,13 +10,13 @@ public class CylDraft extends Draft {
 	final double PI = Math.PI;
 	ArrayList<Location> base;
 
-	CylDraft(double acceleration, double glidingAcceleration, double maxYVelocity) {
-		super(acceleration, glidingAcceleration, maxYVelocity);
+	CylDraft(double acceleration, double glidingAcceleration) {
+		super(acceleration, glidingAcceleration);
 		// TODO Auto-generated constructor stub
 	}
 	
-	public CylDraft(double acceleration, double glidingAcceleration, double maxYVelocity, Location center, double radius, double height){
-		super(acceleration, glidingAcceleration, maxYVelocity);
+	public CylDraft(double acceleration, double glidingAcceleration, Location center, double radius, double height){
+		super(acceleration, glidingAcceleration);
 		setRegion(center, radius, height);
 	}
 	
