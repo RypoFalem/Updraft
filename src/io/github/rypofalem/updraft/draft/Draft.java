@@ -69,7 +69,9 @@ public abstract class Draft {
 	public void spawnParticle(){
 		if(borders == null || borders.size() < 1) return;
 		if(entities.isEmpty()) return;
-		if(bordersIndex < 0) bordersIndex = borders.size()-1 - bordersIndex%borders.size();
+		while(bordersIndex < 0){
+			bordersIndex += borders.size();
+		}
 		double speed = .4;
 		ParticleTrail p = new ParticleTrail(bordersIndex % borders.size(), borders, Particle.CRIT, speed, getMaxYValue());
 		ParticleTrail p2 = new ParticleTrail((bordersIndex+ borders.size()/2) % borders.size(), borders, Particle.CRIT, speed, getMaxYValue());
