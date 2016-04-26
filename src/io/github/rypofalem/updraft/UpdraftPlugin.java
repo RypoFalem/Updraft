@@ -4,19 +4,17 @@ import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import io.github.rypofalem.updraft.draft.CuboidDraft;
+import io.github.rypofalem.updraft.draft.CylDraft;
 import io.github.rypofalem.updraft.draft.Draft;
 
 public class UpdraftPlugin extends JavaPlugin implements Listener{
 	ArrayList<Draft> drafts;
 	DraftPusher dp;
+	int multiplier = 1;
 	
 	@Override
 	public void onEnable(){
@@ -27,34 +25,39 @@ public class UpdraftPlugin extends JavaPlugin implements Listener{
 	
 	public void loadConfig(){
 		drafts = new ArrayList<Draft>();
-		CuboidDraft cd = new CuboidDraft(.5, 3, 3, 15, new Location(Bukkit.getWorld("world"), -41, 77, -32), new Location(Bukkit.getWorld("world"), -51, 100, -44));
+		CuboidDraft cd = new CuboidDraft(.5*multiplier, 3*multiplier, 3*multiplier, new Location(Bukkit.getWorld("world"), -41, 77, -32), new Location(Bukkit.getWorld("world"), -51, 100, -44));
 		drafts.add(cd);
-		dp = new DraftPusher(drafts);
-		Bukkit.getScheduler().runTaskTimer(this, dp, 1, 1);
+		CylDraft cyd = new CylDraft(.5*multiplier, 3*multiplier, 3*multiplier, new Location(Bukkit.getWorld("world"),-46, 77, -6), 5d, 30d);
+		drafts.add(cyd);
+		dp = new DraftPusher(this);
+		Bukkit.getScheduler().runTaskTimer(this, dp, 1, multiplier);
 	}
 	
-	@EventHandler
-	public void onPlayerMove(PlayerMoveEvent event){
-//		for(Draft draft : drafts){
-//			draft.applyToEntity(event.getPlayer());
-//		}
+	public int getMultiplier(){
+		return multiplier;
 	}
 }
 
 class DraftPusher implements Runnable{
-	ArrayList<Draft> drafts;
+	UpdraftPlugin plugin;
+	long tick = 0; // Danger: Overflow in 14.62 billion years. Please do not run this plugin for longer than 14.62 billion years.
 	
-	public DraftPusher(ArrayList<Draft> drafts) {
-		this.drafts = drafts;
+	
+	public DraftPusher(UpdraftPlugin plugin) {
+		this.plugin = plugin;
 	}
 
 	@Override
 	public void run() {
-		for(Player p : Bukkit.getServer().getOnlinePlayers()){
-			for(Draft draft : drafts){
-				draft.applyToEntity(p);
+		tick++;
+		for(Draft draft : plugin.drafts){
+			if(tick%64 == 0){
+				draft.updateNearbyEntities();
 			}
+			if(tick % plugin.multiplier == 0){
+				draft.applyToEntities();
+			}
+			if(tick %2 == 0) draft.spawnParticle();
 		}
 	}
-	
 }
