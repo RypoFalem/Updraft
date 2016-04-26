@@ -41,6 +41,7 @@ public abstract class Draft {
 		}
 		if(!isInRegion(entity.getLocation())) return;
 		
+		entity.setFallDistance(0);
 		if(entity instanceof Player && ((Player)entity).isFlying()){
 			//creative mode flight, do nothing
 		} else if(entity instanceof LivingEntity && ((LivingEntity)entity).isGliding()){

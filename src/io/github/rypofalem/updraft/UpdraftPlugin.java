@@ -32,10 +32,6 @@ public class UpdraftPlugin extends JavaPlugin implements Listener{
 		dp = new DraftPusher(this);
 		Bukkit.getScheduler().runTaskTimer(this, dp, 1, multiplier);
 	}
-	
-	public int getMultiplier(){
-		return multiplier;
-	}
 }
 
 class DraftPusher implements Runnable{

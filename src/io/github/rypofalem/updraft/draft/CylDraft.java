@@ -46,20 +46,23 @@ public class CylDraft extends Draft {
 
 	@Override
 	boolean isInRegion(Location location) {
-		for(Location baseBlock : base){
-			if(location.getBlockX() == baseBlock.getBlockX() && 
-					location.getBlockZ() == baseBlock.getBlockZ() &&
-					location.getBlockY() >= baseBlock.getBlockY() &&
-					location.getBlockY() <= getMaxYValue()){
-				return true;
-			}
-		}
-//		if(location.getY() <= height + center.getY() && location.getY() >= center.getY()){
-//			double horizontalDistance = Math.sqrt(Math.pow(location.getX() - center.getX(), 2) + Math.pow(location.getZ() - center.getZ(), 2));
-//			if(horizontalDistance <= radius){
+//		for(Location baseBlock : base){
+//			if(location.getBlockX() == baseBlock.getBlockX() && 
+//					location.getBlockZ() == baseBlock.getBlockZ() &&
+//					location.getBlockY() >= baseBlock.getBlockY() &&
+//					location.getBlockY() <= getMaxYValue()){
 //				return true;
 //			}
 //		}
+		
+		if( ! Bounds.isInBox(location, center, radius, height, radius)) return false;
+		
+		if(location.getY() <= height + center.getY() && location.getY() >= center.getY()){
+			double horizontalDistance = Math.sqrt(Math.pow(location.getX() - center.getX(), 2) + Math.pow(location.getZ() - center.getZ(), 2));
+			if(horizontalDistance <= radius){
+				return true;
+			}
+		}
 		return false;
 	}
 

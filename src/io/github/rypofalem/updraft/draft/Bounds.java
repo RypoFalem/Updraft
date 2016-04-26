@@ -6,13 +6,22 @@ public class Bounds {
 	
 	//untested, be careful
 	public static boolean isInBox(Location test, Location corner1, Location corner2){
-		Location center = corner1.clone().subtract(corner2).multiply(.5); // center of box the appropriate size but with a corner at 0,0,0
-		double xRadius = center.getX();
-		double yRadius = center.getY();
-		double zRadius = center.getZ();
-		center = center.add(corner2); //now it is center of the box at the right place
+		if(test == null || corner1 == null || corner2 == null) return false;
+		if(test.getWorld() != corner1.getWorld() || test.getWorld() != corner2.getWorld()) return false;
+		double maxX = Math.max(corner1.getX(), corner2.getX()) + 1; 
+		double minX = Math.min(corner1.getX(), corner2.getX());
+		double maxY = Math.max(corner1.getY(), corner2.getY()) + 1;
+		double minY = Math.min(corner1.getY(), corner2.getY());
+		double maxZ = Math.max(corner1.getZ(), corner2.getZ()) + 1;
+		double minZ = Math.min(corner1.getZ(), corner2.getZ());
 		
-		return isInBox(test, center, xRadius, yRadius, zRadius);
+		if(test.getX() >= minX && test.getX() <= maxX 
+				&& test.getY() >= minY && test.getY() <= maxY
+				&& test.getZ() >= minZ && test.getZ() <= maxZ)
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	public static boolean isInBox(Location test, Location center, double xRadius, double yRadius, double zRadius){

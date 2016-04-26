@@ -47,21 +47,7 @@ public class CuboidDraft extends Draft {
 
 	@Override
 	boolean isInRegion(Location location) {
-		if(corner1 == null || corner2 == null) return false;
-		double maxX = Math.max(corner1.getX(), corner2.getX()) + 1; 
-		double minX = Math.min(corner1.getX(), corner2.getX());
-		double maxY = Math.max(corner1.getY(), corner2.getY()) + 1;
-		double minY = Math.min(corner1.getY(), corner2.getY());
-		double maxZ = Math.max(corner1.getZ(), corner2.getZ()) + 1;
-		double minZ = Math.min(corner1.getZ(), corner2.getZ());
-		
-		if(location.getX() >= minX && location.getX() <= maxX 
-				&& location.getY() >= minY && location.getY() <= maxY
-				&& location.getZ() >= minZ && location.getZ() <= maxZ)
-		{
-			return true;
-		}
-		return false;
+		return Bounds.isInBox(location, corner1, corner2);
 	}
 
 	@Override
