@@ -10,6 +10,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import io.github.rypofalem.updraft.UpdraftPlugin;
+
 public abstract class Draft {
 	
 	double walkingWindSpeed;
@@ -24,13 +26,13 @@ public abstract class Draft {
 	Draft(double walkingWindSpeed, double glidingWindSpeed){
 		this.walkingWindSpeed = walkingWindSpeed;
 		this.glidingWindSpeed = glidingWindSpeed;
-		walkingThreshold = .001 * walkingWindSpeed;
-		glidingThreshold = .001 * glidingWindSpeed;
+		walkingThreshold = .01 * walkingWindSpeed;
+		glidingThreshold = .01 * glidingWindSpeed;
 		borders = new ArrayList<Location>();
 		entities = new ArrayList<Entity>();
 	}
 	
-	abstract boolean isInRegion(Location location);
+	public abstract boolean isInRegion(Location location);
 	
 	public void applyToEntity(Entity entity){
 		if(entity == null) return;
@@ -51,16 +53,16 @@ public abstract class Draft {
 		}
 	}
 	
-	void addVerticalVelocity(Entity le, double targetVelocity, double threshold){
-		Vector velocity = le.getVelocity();
-		double yVel =  (targetVelocity - velocity.getY());
-		if(yVel <= threshold){
+	void addVerticalVelocity(Entity entity, double targetVelocity, double threshold){
+		Vector velocity = entity.getVelocity();
+		double yVel =  (targetVelocity - velocity.getY()); //difference between target and actual velocity
+		if(yVel > 0 && yVel <= threshold){
 			velocity.setY(targetVelocity);
 		}else{
-			yVel = yVel/8;
+			yVel = UpdraftPlugin.getPlugin().getMultiplier() * yVel/8; // 1/8 of the difference between target and actual velocity
 			velocity.add(new Vector(0, yVel, 0));
 		}
-		le.setVelocity(velocity);
+		entity.setVelocity(velocity);
 	}
 	
 	abstract double getMaxYValue();
@@ -68,21 +70,24 @@ public abstract class Draft {
 	public void spawnParticle(){
 		if(borders == null || borders.size() < 1) return;
 		if(entities.isEmpty()) return;
-		while(bordersIndex < 0){
-			bordersIndex += borders.size();
-		}
-		double speed = .4;
-		ParticleTrail p = new ParticleTrail(bordersIndex % borders.size(), borders, Particle.CRIT, speed, getMaxYValue());
-		ParticleTrail p2 = new ParticleTrail((bordersIndex+ borders.size()/2) % borders.size(), borders, Particle.CRIT, speed, getMaxYValue());
-		p.playEffect();
-		p2.playEffect();
-		bordersIndex-= 3;
+			while(bordersIndex < 0){
+				bordersIndex += borders.size();
+			}
+			double speed = .4;
+			ParticleTrail p = new ParticleTrail(bordersIndex % borders.size(), borders, Particle.CRIT, speed, getMaxYValue());
+			ParticleTrail p2 = new ParticleTrail((bordersIndex+ borders.size()/2) % borders.size(), borders, Particle.CRIT, speed, getMaxYValue());
+			p.playEffect();
+			p2.playEffect();
+			bordersIndex-= 3 * UpdraftPlugin.getPlugin().getMultiplier();
 	}
-
+	
+	//right now it only adds players
 	public void updateNearbyEntities() {
 		entities = new ArrayList<Entity>();
 		for(Player p : center.getWorld().getPlayers()){
-			if(Bounds.isInBox(p.getLocation(), center, 128, 256, 128)) entities.add(p);
+			if(Bounds.isInBox(p.getLocation(), center, 128, 256, 128)){
+				entities.add(p);
+			}
 		}
 	}
 

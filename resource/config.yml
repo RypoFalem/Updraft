@@ -1,0 +1,7 @@
+# How often the plugin checks occur. Higher numbers reduce lag. 1 is every tick, 2 is every other tick, etc.
+# Anything above 3 is problematic as players might skip past the draft without being pushed up
+multiplier: 2
+
+#Highest Y velocity measured in blocks per tick
+maxVelocity: 15
+

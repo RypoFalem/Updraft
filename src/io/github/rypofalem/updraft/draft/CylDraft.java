@@ -45,7 +45,7 @@ public class CylDraft extends Draft {
 	}
 
 	@Override
-	boolean isInRegion(Location location) {
+	public boolean isInRegion(Location location) {
 //		for(Location baseBlock : base){
 //			if(location.getBlockX() == baseBlock.getBlockX() && 
 //					location.getBlockZ() == baseBlock.getBlockZ() &&
